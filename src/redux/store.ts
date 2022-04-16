@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counterSlice";
+import { counterSlice } from "./counter/counterSlice";
 
 export const store = configureStore({
   reducer: {
-    //  reducerにcounterプロパティにsliceを登録
-    counter: counterReducer,
+    //  reducerのcounterプロパティにsliceを登録
+    counter: counterSlice.reducer,
   },
 });

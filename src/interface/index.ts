@@ -3,7 +3,7 @@ export type RootState = {
   counter: countStateType;
 };
 
-// そのcounterSliceに設定したinitialStateの
+//Counter
 export type countStateType = {
   count: number;
 };

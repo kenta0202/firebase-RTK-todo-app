@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import Counter from "./pages/counter";
 import { store } from "./redux/store";
-import App from "./App";
 
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <App />
+      <Counter />
     </React.StrictMode>
   </Provider>,
   document.getElementById("root")
