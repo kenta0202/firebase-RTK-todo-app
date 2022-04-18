@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../interface";
-import { useCount } from "./hooks";
+import { useCount } from "../../features/counter/counterActionCreator";
+import { selectCount } from "../../features/counter/counterSlice";
 
 function Counter() {
-  // state.counterはstore.tsのreducerに設定したもの
-  const count = useSelector((state: RootState) => state.counter.count);
-  const { up, down } = useCount();
+  // state
+  const count = useSelector(selectCount);
+  // イベントハンドラ
+  const { Aup, Adown, AincrementByAmount } = useCount();
   console.log(count);
 
+  const [input, setinput] = useState<number>(0);
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setinput(Number(e.target.value));
+  };
   return (
     <div className="App">
       <h1>Count: {count}</h1>
-      <button onClick={up}>Up</button>
-      <button onClick={down}>Down</button>
+      <button onClick={Aup}>Up</button>
+      <button onClick={Adown}>Down</button>
+      <input type="number" value={input} onChange={handleOnChange} />
+      <button disabled={input === 0} onClick={() => AincrementByAmount(input!)}>
+        入力分足す
+      </button>
     </div>
   );
 }
