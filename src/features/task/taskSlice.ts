@@ -87,6 +87,7 @@ export const taskSlice = createSlice({
 });
 
 // Stateを引数にStateの指定したプロパティの値を切り出す
+// Selectorの引数
 export const selectTasks = (state: TRootState): TTaskState["tasks"] =>
   state.task.tasks;
 export const selectIsModalOpen = (

@@ -19,8 +19,11 @@ type TProps = {
 };
 
 const TaskItemComponent: React.FC<TProps> = ({ task }) => {
-  const isModalOpen = useAppSelector(selectIsModalOpen);
   const dispatch = useAppDispatch();
+  // State
+  const isModalOpen = useAppSelector(selectIsModalOpen);
+
+  // イベント
   const handleOpen = () => {
     dispatch(selectTask(task));
     dispatch(handleModalOpen(true));

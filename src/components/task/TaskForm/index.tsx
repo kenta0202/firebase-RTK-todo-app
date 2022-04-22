@@ -13,14 +13,17 @@ type Inputs = {
 };
 
 const TaskFormComponent: React.VFC<{
-  handleCreate: (data: Inputs) => void;
   handleSubmit: UseFormHandleSubmit<Inputs>;
-  handleEdit: (data: Inputs) => void;
   register: UseFormRegister<Inputs>;
+  handleCreate: (data: Inputs) => void;
+  handleEdit: (data: Inputs) => void;
   edit?: boolean;
 }> = ({ handleCreate, handleEdit, handleSubmit, register, edit }) => {
   const dispatch = useAppDispatch();
+
+  // 状態
   const selectedTask = useAppSelector(selectedSelectTask);
+
   return (
     <div className={styles.wrapper}>
       <form
@@ -39,18 +42,20 @@ const TaskFormComponent: React.VFC<{
           className={styles.text_field}
         />
         {edit ? (
-          <div className={styles.button_wrapper}>
-            <button type="submit" className={styles.submit_button}>
-              Submit
-            </button>
-            <button
-              type="button"
-              onClick={() => dispatch(handleModalOpen(false))}
-              className={styles.cancel_button}
-            >
-              Cancel
-            </button>
-          </div>
+          <>
+            <div className={styles.button_wrapper}>
+              <button type="submit" className={styles.submit_button}>
+                Submit
+              </button>
+              <button
+                type="button"
+                onClick={() => dispatch(handleModalOpen(false))}
+                className={styles.cancel_button}
+              >
+                Cancel
+              </button>
+            </div>
+          </>
         ) : null}
       </form>
     </div>
