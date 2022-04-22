@@ -4,12 +4,32 @@ import Checkbox from "@material-ui/core/Checkbox";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-
+import Modal from "@material-ui/core/Modal";
+import TaskForm from "../../../pages/task/TaskForm/TaskForm";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import {
+  handleModalOpen,
+  selectIsModalOpen,
+  selectTask,
+  completeTask,
+  deleteTask,
+} from "../../../features/task/taskSlice";
 type TProps = {
   task: { id: number; title: string; completed: boolean };
 };
 
 const TaskItemComponent: React.FC<TProps> = ({ task }) => {
+  const isModalOpen = useAppSelector(selectIsModalOpen);
+  const dispatch = useAppDispatch();
+  const handleOpen = () => {
+    dispatch(selectTask(task));
+    dispatch(handleModalOpen(true));
+  };
+
+  const handleClose = () => {
+    dispatch(handleModalOpen(false));
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>
@@ -19,22 +39,31 @@ const TaskItemComponent: React.FC<TProps> = ({ task }) => {
       <div className={styles.right_menu}>
         <Checkbox
           checked={task.completed}
-          onClick={() => console.log(`check ${task.id}`)}
+          onClick={() => dispatch(completeTask(task))}
           className={styles.checkbox}
         />
-        <button
-          onClick={() => console.log(`edit ${task.id}`)}
-          className={styles.edit_button}
-        >
+        <button onClick={handleOpen} className={styles.edit_button}>
           <EditIcon className={styles.icon} />
         </button>
         <button
           className={styles.delete_button_button}
-          onClick={() => console.log(`delete ${task.id}`)}
+          onClick={() => dispatch(deleteTask(task))}
         >
           <DeleteIcon className={styles.icon} />
         </button>
       </div>
+      <Modal
+        open={isModalOpen}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        className={styles.modal}
+      >
+        <div className={styles.modal_content}>
+          <div className={styles.modal_title}>Edit</div>
+          <TaskForm edit />
+        </div>
+      </Modal>
     </div>
   );
 };

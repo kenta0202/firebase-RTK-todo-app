@@ -47,15 +47,64 @@ export const taskSlice = createSlice({
       };
       state.tasks = [newTask, ...state.tasks];
     },
+    // Modalのフラグ
+    handleModalOpen: (state, action) => {
+      state.isModalOpen = action.payload;
+    },
+    // どのtaskを選択しているか
+    selectTask: (state, action) => {
+      state.selectedTask = action.payload;
+    },
+    // taskの編集
+    editTask: (state, action) => {
+      const tasks = state.tasks.reduce((acc: TTask[], v) => {
+        if (v.id == action.payload.id) {
+          acc.push(action.payload);
+        } else {
+          acc.push(v);
+        }
+        return acc;
+      }, []);
+      state.tasks = tasks;
+    },
+    // task完了未完了のチェックを変更
+    completeTask: (state, action) => {
+      const task = state.tasks.find((t) => {
+        return t.id === action.payload.id;
+      });
+      if (task) {
+        task.completed = !task.completed;
+      }
+    },
+    // taskの削除
+    deleteTask: (state, action) => {
+      // 指定したtask以外で新しくstate.tasksの配列を作成し、直している
+      state.tasks = state.tasks.filter((t) => {
+        return t.id !== action.payload.id;
+      });
+    },
   },
 });
 
-// Stateを引数にStateのcountプロパティの値を切り出す
-export const selectTask = (state: TRootState): TTaskState["tasks"] =>
+// Stateを引数にStateの指定したプロパティの値を切り出す
+export const selectTasks = (state: TRootState): TTaskState["tasks"] =>
   state.task.tasks;
+export const selectIsModalOpen = (
+  state: TRootState
+): TTaskState["isModalOpen"] => state.task.isModalOpen;
+export const selectedSelectTask = (
+  state: TRootState
+): TTaskState["selectedTask"] => state.task.selectedTask;
 
 // Actionを切り出す
-export const { createTask } = taskSlice.actions;
+export const {
+  createTask,
+  handleModalOpen,
+  selectTask,
+  editTask,
+  completeTask,
+  deleteTask,
+} = taskSlice.actions;
 
 // Recuderを切り出す
 export default taskSlice.reducer;
